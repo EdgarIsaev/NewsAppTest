@@ -19,9 +19,22 @@ class NewsListVC: UIViewController {
     }
 
     private func addSubviews() {
+        view.backgroundColor = .white
+        
         view.addSubview(newsTable)
+        newsTable.tableViewDelegate = self
     }
 
+}
+
+//MARK: TableViewProtocol
+
+extension NewsListVC: TableViewProtocol {
+    func cellTapped() {
+        let detailedNewsVC = DetailedNewsScreenVC()
+        detailedNewsVC.modalPresentationStyle = .fullScreen
+        present(detailedNewsVC, animated: true)
+    }
 }
 
 //MARK: SetConstraints
@@ -30,10 +43,10 @@ extension NewsListVC {
     private func setConstraints() {
         NSLayoutConstraint.activate([
         
-            newsTable.topAnchor.constraint(equalTo: view.topAnchor),
+            newsTable.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             newsTable.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             newsTable.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            newsTable.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            newsTable.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
 }

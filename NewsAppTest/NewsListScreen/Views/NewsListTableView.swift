@@ -5,10 +5,15 @@
 //  Created by Эдгар Исаев on 20.10.2023.
 //
 
-import Foundation
 import UIKit
 
+protocol TableViewProtocol: AnyObject {
+    func cellTapped()
+}
+
 class NewsListTableView: UITableView {
+    
+    weak var tableViewDelegate: TableViewProtocol?
     
     private let idTableViewCell = "idTableViewCell"
     
@@ -25,10 +30,15 @@ class NewsListTableView: UITableView {
     
     private func configure() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .blue
+        backgroundColor = .white
+        separatorStyle = .none
         
         dataSource = self
         delegate = self
+    }
+    
+    @objc private func cellTapped() {
+        tableViewDelegate?.cellTapped()
     }
 }
 
@@ -43,6 +53,10 @@ extension NewsListTableView: UITableViewDataSource {
         guard let cell = dequeueReusableCell(withIdentifier: idTableViewCell, for: indexPath) as? NewsListTableViewCell
         else { return UITableViewCell() }
         
+        let tapCell = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
+        tapCell.cancelsTouchesInView = true
+        cell.contentView.addGestureRecognizer(tapCell)
+        
         return cell
     }
     
@@ -53,6 +67,6 @@ extension NewsListTableView: UITableViewDataSource {
 
 extension NewsListTableView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        100
+        300
     }
 }
