@@ -7,7 +7,11 @@
 
 import UIKit
 
+import UIKit
+
 class DetailedNewsScreenVC: UIViewController {
+    
+    private var isFavorite: Bool = false
     
     private lazy var backButton: UIButton = {
         let button = UIButton(type: .system)
@@ -27,7 +31,7 @@ class DetailedNewsScreenVC: UIViewController {
     
     private let titleLabel: UILabel = {
        let label = UILabel()
-        label.text = "Ask Amy: Had we known about this upheaval, we would have declined the wedding invitation"
+        label.text = "Dear Abby: My wife isn’t happy about what I put in my obituary"
         label.minimumScaleFactor = 0.5
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
@@ -40,7 +44,7 @@ class DetailedNewsScreenVC: UIViewController {
     
     private let authorLabel: UILabel = {
        let label = UILabel()
-        label.text = "Albert Bassili"
+        label.text = "Jeanne Phillips"
         label.textColor = .black
         label.font = .systemFont(ofSize: 15, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -49,7 +53,7 @@ class DetailedNewsScreenVC: UIViewController {
     
     private let dateLabel: UILabel = {
        let label = UILabel()
-        label.text = "2023-10-22 09:20:26"
+        label.text = "2023-10-22 08:00:19"
         label.textColor = .lightGray
         label.font = .systemFont(ofSize: 15, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -64,7 +68,7 @@ class DetailedNewsScreenVC: UIViewController {
     
     private let descriptionLabel: UILabel = {
        let label = UILabel()
-        label.text = "If you don't want to spend nearly $500 on a Dyson Supersonic, this Shark alternative will net you a similar premium experience for just $160."
+        label.text = "She suggested I write it, and now she says I'm bragging."
         label.minimumScaleFactor = 0.5
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
@@ -77,7 +81,7 @@ class DetailedNewsScreenVC: UIViewController {
     
     private let contentLabel: UILabel = {
        let label = UILabel()
-        label.text = "Shark There are a lot of different hair dryers out there, but you’re probably familiar with Dyson’s expensive hair dryer, the Supersonic, which often goes for $500 or so, at least if you include all the accessories. Even though the Dyson might use some really interesting technology that puts it out of reach for many folks. Luckily, there is an alternative, the Shark HyperAir hair dryer, which doesn’t use the same technology but has a look, feel, and overall outcome similar to the Dyson Supersonic. Even better, it’s much cheaper, especially with this deal from Amazon knocking it down to $160 from its usual $230 price tag. That’s a significant $70 discount on an excellent hair dryer, so even though it’s not the Dyson Supersonic, it’s almost as good for nearly a quarter of the price. Why you should buy the Shark HyperAIR Hair Dryer The Shark HyperAIR doesn’t use a bladeless design but instead combines hot and ionized air to help speed up the drying process and avoid hair damage, as the Dyson does. In fact, it even has an internal processor that adjusts the air temperature up to 1,000 times per second, which is impressive and creates a consistent heat temperature throughout use. It also has a couple of sensors that can detect your hairstyle and automatically adjust heat and air strength to get the best of both worlds. That said, you can still adjust it yourself if you like, with three different heat levels and three different airflow levels, giving you a lot of granular control over how you style your hair. Speaking of styling, the Shark HyperAIR comes with two different attachments: the 2-in-1 concentrator to dry and style your hair and a diffuser to help define your curls better. The diffusers and the HyperAIR unit combine to give you some really consistent styling, something that you won’t find on more budget-oriented hair dryers and that you’d pay a premium for if you bought the Dyson. Related Dyson’s new Airstrait hair straightener just got an unprecedented price cut Best Buy’s best deal is an air fryer for $18 — but it ends tonight Amazon’s Keurig alternative is incredibly cheap today Overall, the Shark HyperAIR is an excellent all-around hair dryer that offers a premium style experience at more reasonable prices. You can pick it up right now from Amazon for just $160 instead of the usual $230, although if you’d still like something a bit different, there are some other great hair dryer deals you can check out. Editors' Recommendations Huge smart lighting sale gets you a smart bulb from $8 Pet Odors Be Gone: This top-rated Shark air purifier is 38% off A bunch of Black Friday cordless vacuum deals are now live — From $68 Great for large rooms: This air purifier is discounted from $200 to $90 The Arlo Pro 4 security camera bundle is 50% off today"
+        label.text = ": Recently, my wife suggested I write my own obituary (I am almost 80) as her parents did. Because I remember dates and places she didn’t know, I drafted the document. Related Articles Everything in it is accurate, but I emphasized the positive and omitted the negative. Previous marriages? My wife thought mentioning them seemed like I was bragging, although it is factually accurate and the way I would like to be remembered. We haven’t been able to settle our differing views. What do you think? : Not everyone wants to advertise the fact that they have had multiple marriages, but facts are facts. If this is how you wish to be remembered, it is obituary. You have the deciding vote, and your wife should refrain from making any more editorial comments. : For the last six years, my partner and I have hosted family Thanksgiving dinners. I always spend more time and energy than I have to make it beautiful and successful. This year, I have neither the budget nor a desire for the stress. I made it known early that we wouldn’t be hosting this year. Surprisingly, my little sister volunteered to host, and she sent an invitation to the usual crowd. The next day, she called me to tell me that although she would host, she couldn’t possibly be expected to do all that work, and she told me to bring the turkey. She said I was free to cook it at my place or “come a bit early” to cook it there. Shocked, I told her absolutely not, because avoiding this responsibility was the reason I’m not hosting. I was planning on bringing a side or dessert as is usual for guests, but not the main dish. She got mad and said I was ruining Thanksgiving. I feel a growing responsibility to help her out, even though I don’t need the stress in my life right now, and I know once I start, I’ll take control (with her encouragement). She has no idea the amount of work that goes into this meal every year, and I think it will be a mess if I don’t help her cook and prepare. Am I being selfish? Should I go early and teach her how to cook the turkey (and do everything else) for the sake of rescuing this dinner, which everyone has come to expect meets a certain standard? Related Articles The thought is making me miserable, but I feel myself caving to my sister’s tantrum. : Tell your manipulative sister you will come to her place early and show her how to properly cook the turkey, but you won’t be bringing anything other than the side dish you already plan to bring. (This may be a way to teach her some independence.) If she needs more outside help, she should contact the other guests and tell them what she wants them to bring. You are a generous and caring sister, but enough is enough. Your Thanksgivings will be happier if you share the responsibility with other relatives. Also, remember that there are easier ways to manage holiday dinners than cooking all the food yourself. Many people buy a bird or a ham already prepared, and the same is true for the side dishes."
         label.minimumScaleFactor = 0.5
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
@@ -131,7 +135,13 @@ class DetailedNewsScreenVC: UIViewController {
     }
     
     @objc private func bookmarkButtonTapped() {
-        print("bookmarkButtonTapped")
+        isFavorite.toggle()
+        if isFavorite {
+            bookmarkButton.setImage(UIImage(named: "bookmarkTrue")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        } else {
+            bookmarkButton.setImage(UIImage(named: "bookmarkFalse")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        }
+        bookmarkButton.buttonGrowingEffect(bookmarkButton)
     }
 }
 

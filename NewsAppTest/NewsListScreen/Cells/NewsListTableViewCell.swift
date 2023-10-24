@@ -9,6 +9,8 @@ import UIKit
 
 class NewsListTableViewCell: UITableViewCell {
     
+    private var isFavorite: Bool = false
+    
     private lazy var bookmarkButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "bookmarkFalse")?.withRenderingMode(.alwaysOriginal), for: .normal)
@@ -26,7 +28,6 @@ class NewsListTableViewCell: UITableViewCell {
     
     private let titleLabel: UILabel = {
        let label = UILabel()
-        label.text = "Ask Amy: Had we known about this upheaval, we would have declined the wedding invitation"
         label.minimumScaleFactor = 0.5
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
@@ -39,7 +40,6 @@ class NewsListTableViewCell: UITableViewCell {
     
     private let authorLabel: UILabel = {
        let label = UILabel()
-        label.text = "Albert Bassili"
         label.textColor = .black
         label.font = .systemFont(ofSize: 15, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -48,7 +48,6 @@ class NewsListTableViewCell: UITableViewCell {
     
     private let dateLabel: UILabel = {
        let label = UILabel()
-        label.text = "2023-10-22 09:20:26"
         label.textColor = .lightGray
         label.font = .systemFont(ofSize: 15, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -57,7 +56,6 @@ class NewsListTableViewCell: UITableViewCell {
     
     private let descriptionLabel: UILabel = {
        let label = UILabel()
-        label.text = "If you don't want to spend nearly $500 on a Dyson Supersonic, this Shark alternative will net you a similar premium experience for just $160."
         label.minimumScaleFactor = 0.5
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
@@ -68,10 +66,12 @@ class NewsListTableViewCell: UITableViewCell {
         return label
     }()
     
+    private var realmModel = NewsModel()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        setupViews()
+        addSubviews()
         setConstraints()
     }
     
@@ -79,7 +79,7 @@ class NewsListTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupViews() {
+    private func addSubviews() {
         backgroundColor = .clear
         selectionStyle = .none
         
@@ -92,10 +92,41 @@ class NewsListTableViewCell: UITableViewCell {
     }
     
     @objc private func bookmarkButtonTapped() {
-        print("add news")
+        isFavorite.toggle()
+        let results = RealmManager.shared.getResultsNewsModel()
+        if isFavorite {
+            bookmarkButton.setImage(UIImage(named: "bookmarkTrue")?.withRenderingMode(.alwaysOriginal), for: .normal)
+            if !results.contains(realmModel) {
+                realmModel.isSelected = true
+                RealmManager.shared.saveNewsModel(model: realmModel)
+            }
+        } else {
+            bookmarkButton.setImage(UIImage(named: "bookmarkFalse")?.withRenderingMode(.alwaysOriginal), for: .normal)
+            if results.contains(realmModel) {
+                realmModel.isSelected = false
+                RealmManager.shared.deleteNewsModel(model: realmModel)
+            }
+            
+        }
+        buttonGrowingEffect(bookmarkButton)
+    }
+    public func setRealmModel(model:NetworkModel) {
+        realmModel.author = model.creator?[0]
+        realmModel.title = model.title
+        realmModel.date = model.pubDate
+        realmModel.image = model.imageURL
+        realmModel.descript = model.description
+        realmModel.content = model.content
     }
     
-    
+    public func setupViews(model: NetworkModel) {
+        self.titleLabel.text = model.title
+        if model.creator != nil {
+            self.authorLabel.text = model.creator![0]
+        }
+        self.dateLabel.text = model.pubDate
+        self.descriptionLabel.text = model.description
+    }
 }
 
 //MARK: SetConstraints

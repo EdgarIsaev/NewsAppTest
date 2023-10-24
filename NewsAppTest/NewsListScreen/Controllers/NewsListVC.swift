@@ -16,6 +16,7 @@ class NewsListVC: UIViewController {
         
         addSubviews()
         setConstraints()
+        getNewsModels()
     }
 
     private func addSubviews() {
@@ -23,6 +24,20 @@ class NewsListVC: UIViewController {
         
         view.addSubview(newsTable)
         newsTable.tableViewDelegate = self
+    }
+    
+    private func getNewsModels() {
+        NetworkDataFetch.shared.fetchNews { [weak self] data, error in
+            guard let self = self else { return }
+            if let error = error {
+                print(error.localizedDescription)
+            }
+            guard let data = data else { return }
+            print(data)
+            self.newsTable.getNews(models: data.results)
+            self.newsTable.reloadData()
+        }
+        
     }
 
 }

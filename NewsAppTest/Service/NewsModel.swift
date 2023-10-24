@@ -15,5 +15,5 @@ class NewsModel: Object {
     @Persisted var image: String?
     @Persisted var descript: String?
     @Persisted var content: String?
-    @Persisted var isFavorite: Bool = false
+    @Persisted var isSelected: Bool = false
 }

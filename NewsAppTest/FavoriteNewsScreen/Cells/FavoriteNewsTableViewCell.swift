@@ -8,6 +8,8 @@
 import UIKit
 
 class FavoriteNewsTableViewCell: UITableViewCell {
+
+    private var isFavorite: Bool = true
     
     private lazy var bookmarkButton: UIButton = {
         let button = UIButton(type: .system)
@@ -92,7 +94,13 @@ class FavoriteNewsTableViewCell: UITableViewCell {
     }
     
     @objc private func bookmarkButtonTapped() {
-        print("delete news")
+        isFavorite.toggle()
+        if isFavorite {
+            bookmarkButton.setImage(UIImage(named: "bookmarkTrue")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        } else {
+            bookmarkButton.setImage(UIImage(named: "bookmarkFalse")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        }
+        bookmarkButton.buttonGrowingEffect(bookmarkButton)
     }
 }
 

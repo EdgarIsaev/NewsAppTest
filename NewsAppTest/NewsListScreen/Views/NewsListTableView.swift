@@ -13,6 +13,8 @@ protocol TableViewProtocol: AnyObject {
 
 class NewsListTableView: UITableView {
     
+    private var newsArray = [NetworkModel]()
+    
     weak var tableViewDelegate: TableViewProtocol?
     
     private let idTableViewCell = "idTableViewCell"
@@ -40,13 +42,17 @@ class NewsListTableView: UITableView {
     @objc private func cellTapped() {
         tableViewDelegate?.cellTapped()
     }
+    
+    public func getNews(models: [NetworkModel]) {
+        newsArray.append(contentsOf: models)
+    }
 }
 
 // MARK: UITableViewDataSource
 
 extension NewsListTableView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        10
+        newsArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -56,6 +62,11 @@ extension NewsListTableView: UITableViewDataSource {
         let tapCell = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
         tapCell.cancelsTouchesInView = true
         cell.contentView.addGestureRecognizer(tapCell)
+        
+        let model = newsArray[indexPath.row]
+        print(model)
+        cell.setupViews(model: model)
+        cell.setRealmModel(model: model)
         
         return cell
     }
@@ -67,6 +78,6 @@ extension NewsListTableView: UITableViewDataSource {
 
 extension NewsListTableView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        300
+        250
     }
 }

@@ -25,4 +25,8 @@ class RealmManager {
             realm.delete(model)
         }
     }
+    
+    func getResultsNewsModel() -> Results<NewsModel> {
+        realm.objects(NewsModel.self)
+    }
 }
