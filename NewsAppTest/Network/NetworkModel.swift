@@ -17,7 +17,7 @@ struct News: Decodable {
 struct NetworkModel: Decodable {
     let title: String
     let creator: [String]?
-    let description, content, pubDate: String
+    let description, content, pubDate: String?
     let imageURL: String?
     
     enum CodingKeys: String, CodingKey {
