@@ -169,6 +169,26 @@ class DetailedNewsScreenVC: UIViewController {
         }
         
     }
+    
+    public func setupFavoriteNews(model: NewsModel) {
+        titleLabel.text = model.title
+        authorLabel.text = model.author
+        dateLabel.text = model.date
+        descriptionLabel.text = model.descript
+        contentLabel.text = model.content
+        
+        NetworkImageRequest.shared.imageFetch(imageUrl: model.image) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+                
+            case .success(let image):
+                self.imageView.image = image
+                hideOrShowImage()
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
 }
 
 extension DetailedNewsScreenVC {
@@ -179,7 +199,7 @@ extension DetailedNewsScreenVC {
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),

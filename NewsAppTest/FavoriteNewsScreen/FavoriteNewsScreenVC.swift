@@ -82,6 +82,8 @@ extension FavoriteNewsScreenVC: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detailedVC = DetailedNewsScreenVC()
+        let model = newsArray[indexPath.row]
+        detailedVC.setupFavoriteNews(model: model)
         detailedVC.modalPresentationStyle = .fullScreen
         present(detailedVC, animated: true)
     }
