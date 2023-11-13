@@ -67,6 +67,7 @@ class NewsListTableViewCell: UITableViewCell {
     }()
     
     private var realmModel = NewsModel()
+    private var networkModel: NetworkModel?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -93,23 +94,20 @@ class NewsListTableViewCell: UITableViewCell {
     
     @objc private func bookmarkButtonTapped() {
         isFavorite.toggle()
-        let results = RealmManager.shared.getResultsNewsModel()
+        
         if isFavorite {
             bookmarkButton.setImage(UIImage(named: "bookmarkTrue")?.withRenderingMode(.alwaysOriginal), for: .normal)
-            if !results.contains(realmModel) {
-                realmModel.isSelected = true
-                RealmManager.shared.saveNewsModel(model: realmModel)
-            }
+            guard let model = networkModel else { return }
+            setRealmModel(model: model)
+            RealmManager.shared.saveNewsModel(model: realmModel, isSelected: isFavorite)
         } else {
             bookmarkButton.setImage(UIImage(named: "bookmarkFalse")?.withRenderingMode(.alwaysOriginal), for: .normal)
-            if results.contains(realmModel) {
-                realmModel.isSelected = false
-                RealmManager.shared.deleteNewsModel(model: realmModel)
-            }
-            
+            RealmManager.shared.deleteNewsModel(model: realmModel, isSelected: isFavorite)
+            realmModel = NewsModel()
         }
         buttonGrowingEffect(bookmarkButton)
     }
+    
     public func setRealmModel(model:NetworkModel) {
         realmModel.author = model.creator?[0]
         realmModel.title = model.title
@@ -117,6 +115,10 @@ class NewsListTableViewCell: UITableViewCell {
         realmModel.image = model.imageURL
         realmModel.descript = model.description
         realmModel.content = model.content
+    }
+    
+    public func setNetworkModel(model: NetworkModel) {
+        networkModel = model
     }
     
     public func setupViews(model: NetworkModel) {

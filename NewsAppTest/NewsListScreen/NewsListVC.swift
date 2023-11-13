@@ -68,7 +68,7 @@ extension NewsListVC: UITableViewDataSource {
         
         let model = newsArray[indexPath.row]
         cell.setupViews(model: model)
-        cell.setRealmModel(model: model)
+        cell.setNetworkModel(model: model)
         
         return cell
     }

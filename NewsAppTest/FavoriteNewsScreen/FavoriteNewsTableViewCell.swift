@@ -73,7 +73,7 @@ class FavoriteNewsTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        setupViews()
+        addViews()
         setConstraints()
     }
     
@@ -81,7 +81,7 @@ class FavoriteNewsTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupViews() {
+    private func addViews() {
         backgroundColor = .white
         selectionStyle = .none
         
@@ -91,6 +91,13 @@ class FavoriteNewsTableViewCell: UITableViewCell {
         addSubview(dateLabel)
         addSubview(descriptionLabel)
         addSubview(lineView)
+    }
+    
+    public func setupViews(model: NewsModel) {
+        titleLabel.text = model.title
+        authorLabel.text = model.author
+        dateLabel.text = model.date
+        descriptionLabel.text = model.descript
     }
     
     @objc private func bookmarkButtonTapped() {
