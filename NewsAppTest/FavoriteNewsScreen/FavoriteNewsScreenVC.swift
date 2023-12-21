@@ -10,11 +10,7 @@ import UIKit
 
 class FavoriteNewsScreenVC: UIViewController {
 
-    private let favoriteTableView = UITableView()
-    
-    private let idFavoriteTableViewCell = "idFavoriteTableViewCell"
-    
-    private var newsArray = [NewsModel]()
+    private let favoriteTableView = FavoriteNewsTableView()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -27,62 +23,47 @@ class FavoriteNewsScreenVC: UIViewController {
         
         addSubviews()
         setConstraints()
-        setDelegates()
-        favoriteTableView.register(FavoriteNewsTableViewCell.self, forCellReuseIdentifier: idFavoriteTableViewCell)
     }
     
     private func addSubviews() {
         view.backgroundColor = .white
-        favoriteTableView.translatesAutoresizingMaskIntoConstraints = false
-        favoriteTableView.backgroundColor = .white
-        favoriteTableView.separatorStyle = .none
         
         view.addSubview(favoriteTableView)
-    }
-    
-    private func setDelegates() {
-        favoriteTableView.dataSource = self
-        favoriteTableView.delegate = self
+        favoriteTableView.tableViewDelegate = self
+        
     }
     
     private func getModels() {
         let allNews = RealmManager.shared.getResultsNewsModel()
-        newsArray = [NewsModel]()
+        var newsList = [NewsModel]()
         for news in allNews {
-            newsArray.append(news)
+            newsList.append(news)
         }
+        favoriteTableView.getNews(model: newsList)
         favoriteTableView.reloadData()
     }
 }
 
-//MARK: UITableViewDataSource
+//MARK: FavoriteTableViewCellProtocol
 
-extension FavoriteNewsScreenVC: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        newsArray.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: idFavoriteTableViewCell, for: indexPath) as? FavoriteNewsTableViewCell
-        else { return UITableViewCell() }
-        
-        let model = newsArray[indexPath.row]
-        cell.setupViews(model: model)
-        
-        return cell
+extension FavoriteNewsScreenVC: FavoriteTableViewCellProtocol {
+    func bookmarkButtonTapped(title: String) {
+        let results = RealmManager.shared.getResultsNewsModel()
+        for result in results {
+            if result.title == title {
+                RealmManager.shared.deleteNewsModel(model: result)
+            }
+        }
+        getModels()
+        favoriteTableView.reloadData()
     }
 }
 
-//MARK: UITableViewDelegate
+//MARK: FavoriteNewsTableViewProtocol
 
-extension FavoriteNewsScreenVC: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        250
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+extension FavoriteNewsScreenVC: FavoriteNewsTableViewProtocol {
+    func selectedCell(model: NewsModel) {
         let detailedVC = DetailedNewsScreenVC()
-        let model = newsArray[indexPath.row]
         detailedVC.setupFavoriteNews(model: model)
         detailedVC.modalPresentationStyle = .fullScreen
         present(detailedVC, animated: true)

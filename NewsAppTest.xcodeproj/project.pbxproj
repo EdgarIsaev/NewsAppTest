@@ -22,6 +22,8 @@
 		5FBEA1122AE7A5A90005DD11 /* NetworkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBEA10E2AE7A5A90005DD11 /* NetworkRequest.swift */; };
 		5FBEA1132AE7A5A90005DD11 /* NetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBEA10F2AE7A5A90005DD11 /* NetworkModel.swift */; };
 		5FBEA1162AE7A5D80005DD11 /* UIView + extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBEA1152AE7A5D80005DD11 /* UIView + extension.swift */; };
+		5FD9D19A2B1B873D00F734BD /* NewsListTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FD9D1992B1B873D00F734BD /* NewsListTableView.swift */; };
+		5FD9D19C2B1B8F0B00F734BD /* FavoriteNewsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FD9D19B2B1B8F0B00F734BD /* FavoriteNewsTableView.swift */; };
 		5FFF581B2AE5E758004A87AA /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 5FFF581A2AE5E758004A87AA /* Realm */; };
 		5FFF581D2AE5E758004A87AA /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 5FFF581C2AE5E758004A87AA /* RealmSwift */; };
 		5FFF58202AE5EF74004A87AA /* NewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FFF581F2AE5EF74004A87AA /* NewsModel.swift */; };
@@ -46,6 +48,8 @@
 		5FBEA10E2AE7A5A90005DD11 /* NetworkRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkRequest.swift; sourceTree = "<group>"; };
 		5FBEA10F2AE7A5A90005DD11 /* NetworkModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkModel.swift; sourceTree = "<group>"; };
 		5FBEA1152AE7A5D80005DD11 /* UIView + extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView + extension.swift"; sourceTree = "<group>"; };
+		5FD9D1992B1B873D00F734BD /* NewsListTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsListTableView.swift; sourceTree = "<group>"; };
+		5FD9D19B2B1B8F0B00F734BD /* FavoriteNewsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteNewsTableView.swift; sourceTree = "<group>"; };
 		5FFF581F2AE5EF74004A87AA /* NewsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsModel.swift; sourceTree = "<group>"; };
 		5FFF58212AE5FB75004A87AA /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -110,6 +114,7 @@
 			children = (
 				5F2A08C62AE3FA6B007527B8 /* FavoriteNewsScreenVC.swift */,
 				5F2A08C42AE3FA6B007527B8 /* FavoriteNewsTableViewCell.swift */,
+				5FD9D19B2B1B8F0B00F734BD /* FavoriteNewsTableView.swift */,
 			);
 			path = FavoriteNewsScreen;
 			sourceTree = "<group>";
@@ -119,6 +124,7 @@
 			children = (
 				5F2A08CD2AE3FA6B007527B8 /* NewsListVC.swift */,
 				5F2A08CB2AE3FA6B007527B8 /* NewsListTableViewCell.swift */,
+				5FD9D1992B1B873D00F734BD /* NewsListTableView.swift */,
 			);
 			path = NewsListScreen;
 			sourceTree = "<group>";
@@ -257,6 +263,7 @@
 				5F2A08AE2AE3F925007527B8 /* AppDelegate.swift in Sources */,
 				5F2A08DC2AE45AE2007527B8 /* TabBarController.swift in Sources */,
 				5FBEA1162AE7A5D80005DD11 /* UIView + extension.swift in Sources */,
+				5FD9D19C2B1B8F0B00F734BD /* FavoriteNewsTableView.swift in Sources */,
 				5FBEA1122AE7A5A90005DD11 /* NetworkRequest.swift in Sources */,
 				5F2A08D22AE3FA6B007527B8 /* FavoriteNewsTableViewCell.swift in Sources */,
 				5FFF58222AE5FB75004A87AA /* RealmManager.swift in Sources */,
@@ -267,6 +274,7 @@
 				5FBEA1112AE7A5A90005DD11 /* NetworkDataFetch.swift in Sources */,
 				5F2A08D52AE3FA6B007527B8 /* NewsListTableViewCell.swift in Sources */,
 				5FBEA1102AE7A5A90005DD11 /* NetworkImageRequest.swift in Sources */,
+				5FD9D19A2B1B873D00F734BD /* NewsListTableView.swift in Sources */,
 				5F2A08B02AE3F925007527B8 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

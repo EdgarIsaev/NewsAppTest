@@ -66,8 +66,10 @@ class NewsListTableViewCell: UITableViewCell {
         return label
     }()
     
+    private var urlString = ""
+    private var contentString = ""
+    
     private var realmModel = NewsModel()
-    private var networkModel: NetworkModel?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -97,37 +99,50 @@ class NewsListTableViewCell: UITableViewCell {
         
         if isFavorite {
             bookmarkButton.setImage(UIImage(named: "bookmarkTrue")?.withRenderingMode(.alwaysOriginal), for: .normal)
-            guard let model = networkModel else { return }
-            setRealmModel(model: model)
-            RealmManager.shared.saveNewsModel(model: realmModel, isSelected: isFavorite)
+            setRealmModel()
+            RealmManager.shared.saveNewsModel(model: realmModel)
         } else {
             bookmarkButton.setImage(UIImage(named: "bookmarkFalse")?.withRenderingMode(.alwaysOriginal), for: .normal)
-            RealmManager.shared.deleteNewsModel(model: realmModel, isSelected: isFavorite)
+            deleteModel()
             realmModel = NewsModel()
         }
-        buttonGrowingEffect(bookmarkButton)
+        viewGrowingEffect(bookmarkButton)
     }
     
-    public func setRealmModel(model:NetworkModel) {
-        realmModel.author = model.creator?[0]
-        realmModel.title = model.title
-        realmModel.date = model.pubDate
-        realmModel.image = model.imageURL
-        realmModel.descript = model.description
-        realmModel.content = model.content
+    private func setRealmModel() {
+        realmModel.author = authorLabel.text
+        realmModel.title = titleLabel.text
+        realmModel.date = dateLabel.text
+        realmModel.image = urlString
+        realmModel.descript = descriptionLabel.text
+        realmModel.content = contentString
     }
     
-    public func setNetworkModel(model: NetworkModel) {
-        networkModel = model
-    }
-    
-    public func setupViews(model: NetworkModel) {
-        self.titleLabel.text = model.title
-        if model.creator != nil {
-            self.authorLabel.text = model.creator![0]
+    private func deleteModel() {
+        let results = RealmManager.shared.getResultsNewsModel()
+        for result in results {
+            if result.title == titleLabel.text {
+                RealmManager.shared.deleteNewsModel(model: result)
+            }
         }
-        self.dateLabel.text = model.pubDate
-        self.descriptionLabel.text = model.description
+    }
+    
+    public func setupViews(model: NetworkModel, isSaved: Bool) {
+        titleLabel.text = model.title
+        if model.creator != nil {
+            authorLabel.text = model.creator![0]
+        }
+        dateLabel.text = model.pubDate
+        descriptionLabel.text = model.description
+        urlString = model.imageURL ?? ""
+        contentString = model.content ?? ""
+        if isSaved {
+            bookmarkButton.setImage(UIImage(named: "bookmarkTrue")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        } else {
+            bookmarkButton.setImage(UIImage(named: "bookmarkFalse")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        }
+        
+        isFavorite = isSaved
     }
 }
 

@@ -14,16 +14,14 @@ class RealmManager {
     
     let realm = try! Realm()
     
-    func saveNewsModel(model: NewsModel, isSelected: Bool) {
+    func saveNewsModel(model: NewsModel) {
         try! realm.write {
-            model.isSelected = isSelected
             realm.add(model)
         }
     }
     
-    func deleteNewsModel(model: NewsModel, isSelected: Bool) {
+    func deleteNewsModel(model: NewsModel) {
         try! realm.write {
-            model.isSelected = isSelected
             realm.delete(model)
         }
     }

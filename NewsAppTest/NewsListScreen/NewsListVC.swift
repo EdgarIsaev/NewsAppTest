@@ -9,17 +9,11 @@ import UIKit
 
 class NewsListVC: UIViewController {
     
-    private let newsTable: UITableView = {
-       let tableView = UITableView()
-        tableView.backgroundColor = .white
-        tableView.separatorStyle = .none
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        return tableView
-    }()
+    private let newsTable = NewsListTableView()
     
-    private var newsArray = [NetworkModel]()
-    
-    private let idTableViewCell = "idTableViewCell"
+    override func viewWillAppear(_ animated: Bool) {
+        newsTable.reloadData()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,14 +21,13 @@ class NewsListVC: UIViewController {
         addSubviews()
         setConstraints()
         getNewsModels()
-        setDelegate()
-        newsTable.register(NewsListTableViewCell.self, forCellReuseIdentifier: idTableViewCell)
     }
     
     private func addSubviews() {
         view.backgroundColor = .white
         
         view.addSubview(newsTable)
+        newsTable.newsListTableViewDelegate = self
     }
     
     private func getNewsModels() {
@@ -44,46 +37,17 @@ class NewsListVC: UIViewController {
                 print(error.localizedDescription)
             }
             guard let data = data else { return }
-            self.newsArray.append(contentsOf: data.results)
-            self.newsTable.reloadData()
+            newsTable.getNews(models: data.results)
+            newsTable.reloadData()
         }
     }
-    
-    private func setDelegate() {
-        newsTable.dataSource = self
-        newsTable.delegate = self
-    }
 }
 
-//MARK: UITableViewDataSource
+//MARK: NewsListTableViewProtocol
 
-extension NewsListVC: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        newsArray.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = newsTable.dequeueReusableCell(withIdentifier: idTableViewCell, for: indexPath) as? NewsListTableViewCell
-        else { return UITableViewCell() }
-        
-        let model = newsArray[indexPath.row]
-        cell.setupViews(model: model)
-        cell.setNetworkModel(model: model)
-        
-        return cell
-    }
-}
-
-// MARK: UITableViewDelegate
-
-extension NewsListVC: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        250
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+extension NewsListVC: NewsListTableViewProtocol {
+    func selectedCell(model: NetworkModel) {
         let detailedVC = DetailedNewsScreenVC()
-        let model = newsArray[indexPath.row]
         detailedVC.setupViews(model: model)
         detailedVC.modalPresentationStyle = .fullScreen
         present(detailedVC, animated: true)

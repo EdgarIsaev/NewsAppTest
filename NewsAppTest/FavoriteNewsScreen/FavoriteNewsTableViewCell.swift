@@ -7,9 +7,13 @@
 
 import UIKit
 
-class FavoriteNewsTableViewCell: UITableViewCell {
+protocol FavoriteTableViewCellProtocol: AnyObject {
+    func bookmarkButtonTapped(title: String)
+}
 
-    private var isFavorite: Bool = true
+class FavoriteNewsTableViewCell: UITableViewCell {
+    
+    weak var tableViewCellDelegate: FavoriteTableViewCellProtocol?
     
     private lazy var bookmarkButton: UIButton = {
         let button = UIButton(type: .system)
@@ -28,7 +32,6 @@ class FavoriteNewsTableViewCell: UITableViewCell {
     
     private let titleLabel: UILabel = {
        let label = UILabel()
-        label.text = "Ask Amy: Had we known about this upheaval, we would have declined the wedding invitation"
         label.minimumScaleFactor = 0.5
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
@@ -41,7 +44,6 @@ class FavoriteNewsTableViewCell: UITableViewCell {
     
     private let authorLabel: UILabel = {
        let label = UILabel()
-        label.text = "Albert Bassili"
         label.textColor = .black
         label.font = .systemFont(ofSize: 15, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -50,7 +52,6 @@ class FavoriteNewsTableViewCell: UITableViewCell {
     
     private let dateLabel: UILabel = {
        let label = UILabel()
-        label.text = "2023-10-22 09:20:26"
         label.textColor = .lightGray
         label.font = .systemFont(ofSize: 15, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -59,7 +60,6 @@ class FavoriteNewsTableViewCell: UITableViewCell {
     
     private let descriptionLabel: UILabel = {
        let label = UILabel()
-        label.text = "If you don't want to spend nearly $500 on a Dyson Supersonic, this Shark alternative will net you a similar premium experience for just $160."
         label.minimumScaleFactor = 0.5
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
@@ -69,6 +69,8 @@ class FavoriteNewsTableViewCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+    private var realmModel = NewsModel()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -93,21 +95,21 @@ class FavoriteNewsTableViewCell: UITableViewCell {
         addSubview(lineView)
     }
     
+    @objc private func bookmarkButtonTapped() {
+        tableViewCellDelegate?.bookmarkButtonTapped(title: titleLabel.text ?? "")
+    }
+    
+    public func changeBookmarkImage() {
+        bookmarkButton.setImage(UIImage(named: "bookmarkFalse")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        viewGrowingEffect(bookmarkButton)
+    }
+    
     public func setupViews(model: NewsModel) {
         titleLabel.text = model.title
         authorLabel.text = model.author
         dateLabel.text = model.date
         descriptionLabel.text = model.descript
-    }
-    
-    @objc private func bookmarkButtonTapped() {
-        isFavorite.toggle()
-        if isFavorite {
-            bookmarkButton.setImage(UIImage(named: "bookmarkTrue")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        } else {
-            bookmarkButton.setImage(UIImage(named: "bookmarkFalse")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        }
-        bookmarkButton.buttonGrowingEffect(bookmarkButton)
+        realmModel =  model
     }
 }
 

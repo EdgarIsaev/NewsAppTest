@@ -7,8 +7,6 @@
 
 import UIKit
 
-import UIKit
-
 class DetailedNewsScreenVC: UIViewController {
     
     private var isFavorite: Bool = false
@@ -104,6 +102,9 @@ class DetailedNewsScreenVC: UIViewController {
         return view
     }()
     
+    private var realmModel = NewsModel()
+    private var urlString = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -141,12 +142,62 @@ class DetailedNewsScreenVC: UIViewController {
     
     @objc private func bookmarkButtonTapped() {
         isFavorite.toggle()
+        
         if isFavorite {
             bookmarkButton.setImage(UIImage(named: "bookmarkTrue")?.withRenderingMode(.alwaysOriginal), for: .normal)
+            setRealmModel()
+            RealmManager.shared.saveNewsModel(model: realmModel)
         } else {
             bookmarkButton.setImage(UIImage(named: "bookmarkFalse")?.withRenderingMode(.alwaysOriginal), for: .normal)
+            deleteModel()
+            realmModel = NewsModel()
         }
-        bookmarkButton.buttonGrowingEffect(bookmarkButton)
+        bookmarkButton.viewGrowingEffect(bookmarkButton)
+    }
+    
+    private func setRealmModel() {
+        realmModel.author = authorLabel.text
+        realmModel.title = titleLabel.text
+        realmModel.date = dateLabel.text
+        realmModel.image = urlString
+        realmModel.descript = descriptionLabel.text
+        realmModel.content = contentLabel.text
+    }
+    
+    private func deleteModel() {
+        let results = RealmManager.shared.getResultsNewsModel()
+        for result in results {
+            if result.title == titleLabel.text {
+                RealmManager.shared.deleteNewsModel(model: result)
+            }
+        }
+    }
+    
+    private func getImage(imageString: String?) {
+        NetworkImageRequest.shared.imageFetch(imageUrl: imageString) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+                
+            case .success(let image):
+                self.imageView.image = image
+                hideOrShowImage()
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    private func setBookmarkImage(titleText: String) {
+        let results = RealmManager.shared.getResultsNewsModel()
+        for result in results {
+            if result.title == titleText {
+                bookmarkButton.setImage(UIImage(named: "bookmarkTrue")?.withRenderingMode(.alwaysOriginal), for: .normal)
+                isFavorite = true
+                break
+            } else {
+                bookmarkButton.setImage(UIImage(named: "bookmarkFalse")?.withRenderingMode(.alwaysOriginal), for: .normal)
+            }
+        }
     }
     
     public func setupViews(model: NetworkModel) {
@@ -155,19 +206,11 @@ class DetailedNewsScreenVC: UIViewController {
         dateLabel.text = model.pubDate
         descriptionLabel.text = model.description
         contentLabel.text = model.content
-        
-        NetworkImageRequest.shared.imageFetch(imageUrl: model.imageURL) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-                
-            case .success(let image):
-                self.imageView.image = image
-                hideOrShowImage()
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
+        urlString = model.imageURL ?? ""
+        setBookmarkImage(titleText: model.title)
+        if model.imageURL != nil {
+            getImage(imageString: model.imageURL)
         }
-        
     }
     
     public func setupFavoriteNews(model: NewsModel) {
@@ -176,17 +219,11 @@ class DetailedNewsScreenVC: UIViewController {
         dateLabel.text = model.date
         descriptionLabel.text = model.descript
         contentLabel.text = model.content
-        
-        NetworkImageRequest.shared.imageFetch(imageUrl: model.image) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-                
-            case .success(let image):
-                self.imageView.image = image
-                hideOrShowImage()
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
+        urlString = model.image ?? ""
+        bookmarkButton.setImage(UIImage(named: "bookmarkTrue")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        isFavorite = true
+        if model.image != nil {
+            getImage(imageString: model.image)
         }
     }
 }

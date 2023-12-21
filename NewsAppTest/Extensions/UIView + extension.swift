@@ -9,7 +9,7 @@ import UIKit
 
 extension UIView {
     
-    func buttonGrowingEffect(_ sender: UIButton) {
+    func viewGrowingEffect(_ sender: UIView) {
         UIView.animate(withDuration: 0.2, animations: {
             sender.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
         }, completion: { _ in
